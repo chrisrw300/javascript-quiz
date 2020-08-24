@@ -5,17 +5,18 @@ var startBtn = document.querySelector('#start-btn');      //start button
 var quizQuestionEl = document.querySelector('#question');
 var quizWrapper = document.querySelector('#quiz-wrapper');
 var quizDivEl = document.querySelector('#quiz');
-var createFormEl = document.createElement("form")
-var initialInputEl = document.createElement("input")
-var finalScoreButtonEl = document.createElement("button")
-var quizScoreEl = document.createElement("p")
-var finalScoreEl = document.createElement("ul")
-var goHomeButtonEl = document.createElement("button")
-var clearScoresEl = document.createElement("button")
-var currentQuestion = 0
-var points = 0;
+var createFormEl = document.createElement('form');
+var initialInputEl = document.createElement('input');
+var finalScoreButtonEl = document.createElement('button');
+var quizScoreEl = document.createElement('p');
+var finalScoreEl = document.createElement('ul');
+var goHomeButtonEl = document.createElement('button');
+var clearScoresEl = document.createElement('button');
+var currentQuestion = 0;
 var timeLeft = 60;
+var points = timeLeft;
 
+//array declaration
 var quizQuestionsArray = [
     {
         question: 'Commonly used data types do NOT include:', 
@@ -44,7 +45,7 @@ var quizQuestionsArray = [
 
 ]
 
-var startQuiz = function () {
+function startQuiz() {
     var quests = quizQuestionsArray[currentQuestion].question;
     var currentAns = quizQuestionsArray[currentQuestion].choices;
     var ulEl = document.createElement("ul");
@@ -72,19 +73,18 @@ var startQuiz = function () {
     };
 
     if (quests === null) {
-        highScore()
+        highScore();
     }
 
-    quizDivEl.appendChild(ulEl)
+    quizDivEl.appendChild(ulEl);
 
-    quizQuestionEl.textContent = quests
+    quizQuestionEl.textContent = quests;
 
 };
 
 function buttonClick() {
     if (this.value === quizQuestionsArray[currentQuestion].answer.toString()) {
         currentQuestion++;
-        timeLeft = timeLeft - 0;
         startQuiz();
     } else {
         timeLeft = timeLeft - 10;
@@ -100,17 +100,22 @@ function countdownTimer() {
         if (timeLeft > 1) {
             timerEl.textContent = timeLeft + ' seconds left';
             timeLeft--;
-        } else if (timeLeft === 1) {
-            timerEl.textContent = timeLeft;
-            timeLeft--;
-        } else if (quizQuestionsArray[currentQuestion].question === null) {
-            clearInterval(timeInterval);
-        } else if (timeLeft === 0) {
-            quizQuestionEl.textContent = 'Quiz Complete!';
+
+        } 
+        else if (quizQuestionsArray[currentQuestion].question === null) {
+            
+            
             quizDivEl.innerHTML = '';
-            clearInterval(timeInterval);
             return highScore();
-        } else {
+        }
+        else if (timeLeft === 1) {
+            timerEl.textContent = timeLeft + ' second left';
+            timeLeft--;
+        } 
+        else if (timeLeft === 0) {
+            clearInterval(timeInterval);
+        }
+         else {
             timerEl.textContent = '';
             clearInterval(timeInterval);
         }
@@ -118,71 +123,107 @@ function countdownTimer() {
 }
 
 
-var showQuestion = function (answerInd) {
+function showQuestion(answerInd) {
     if (quizQuestionsArray[currentQuestion].answer == answerInd) {
-        currentQuestion++
-        startQuiz()
+        currentQuestion++;
+        startQuiz();
     } else {
-        currentQuestion++
-        startQuiz()
+        currentQuestion++;
+        startQuiz();
     }
 
 }
 
-var highScore = function () {
+function highScore() {
 
+    quizQuestionEl.textContent = 'Quiz Complete!';
     quizScoreEl.textContent = "You scored " + points + " points!";
-    quizScoreEl.setAttribute("id", "score-id")
-    createFormEl.appendChild(initialInputEl)
+    quizScoreEl.setAttribute("id", "score-id");
+    createFormEl.appendChild(initialInputEl);
 
     finalScoreButtonEl.onclick = function () { finalScore(initialInputEl) };
-    finalScoreButtonEl.textContent = "Submit Your Score"
-    finalScoreButtonEl.setAttribute("id", "submit-id")
+    finalScoreButtonEl.textContent = "Submit Your Score";
+    finalScoreButtonEl.setAttribute("id", "submit-id");
 
     //sets attribute to initial input of high score set
-    initialInputEl.setAttribute("type", "text")
-    initialInputEl.setAttribute("placeholder", "Enter Initials")
-    initialInputEl.setAttribute("id", "form-id")
-
+    initialInputEl.setAttribute("type", "text");
+    initialInputEl.setAttribute("placeholder", "Enter Initials");
+    initialInputEl.setAttribute("id", "form-id");
+   
     //adds to quiz div
+    quizDivEl.appendChild(quizQuestionEl)
     quizDivEl.appendChild(quizScoreEl)
     quizDivEl.appendChild(createFormEl)
     quizDivEl.appendChild(finalScoreButtonEl)
-
+    
 }
 
-var finalScore = function (initialInputEl) {
+function finalScore(initialInputEl) {
     quizDivEl.innerHTML = ' ';
+    console.log(quizDivEl);
     var newScore = {
-        points: points,
+        points: timeLeft,
         name: initialInputEl.value
-    }
+    };
 
-    var scoresArray = JSON.parse(localStorage.getItem("highScores"))
-    if (scoresArray == null) {
-        scoresArray = []
-    }
-    
-    scoresArray.push(newScore)
-    localStorage.setItem("highScores", JSON.stringify(scoresArray));
+    var scoreArray = JSON.parse(localStorage.getItem("highScores"))
+    if (scoreArray == null) {
+        scoreArray = [];
+    };
+
+    scoreArray.push(newScore);
+    localStorage.setItem("highScores", JSON.stringify(scoreArray));
     finalScoreEl.innerHTML = '';
-    for (var i = 0; i < scoresArray.length; i++) {
-        finalScoreEl.innerHTML += `<li id="final-hi-id">${scoresArray[i].name} - ${scoresArray[i].points}</li>`
-    }
 
-    quizQuestionEl.textContent = "Leaderboard";
-    goHomeButtonEl.textContent = "Home";
-    clearScoresEl.textContent = "Clear Scores";
-    goHomeButtonEl.setAttribute("id", "home-bt-id");
+    for (var i = 0; i < scoreArray.length; i++) {
+        finalScoreEl.innerHTML += `<li id="final-score-id">${scoreArray[i].name} - ${scoreArray[i].points}</li>`;
+    };
+
+    quizQuestionEl.innerHTML = '<div id="leaderboard-header-id">Leaderboard</div>';
+    //button to go home, sets attributes and id, onclick it reloads browser
+    goHomeButtonEl.textContent = 'Home';
+    goHomeButtonEl.setAttribute("id", "home-btn");
     goHomeButtonEl.setAttribute("onclick", "location.reload()");
-    clearScoresEl.setAttribute("id", "home-bt-id")
+    //button to clear scoreboard, set attributes and id, click clears local storage
+    clearScoresEl.textContent = 'Clear Scores';
+    clearScoresEl.setAttribute("id", "home-btn");
     clearScoresEl.setAttribute("onclick", "localStorage.clear()");
-    quizDivEl.appendChild(finalScoreEl)
-    quizDivEl.appendChild(goHomeButtonEl)
-    quizDivEl.appendChild(clearScoresEl)
+    //appends each element to the quiz div
+    quizDivEl.appendChild(finalScoreEl);
+    quizDivEl.appendChild(goHomeButtonEl);
+    quizDivEl.appendChild(clearScoresEl);
 };
+
+function scoreboardView() {
+    //hides start btn when accessing leaderboard from home
+    startBtn.setAttribute('class', 'hide');
+
+    //gets highscore
+    var scoreArray = JSON.parse(localStorage.getItem("highScores"))
+    if (scoreArray == null) {
+        scoreArray = [];
+    };
+
+    for (var i = 0; i < scoreArray.length; i++) {
+        finalScoreEl.innerHTML += `<li id="final-score-id">${scoreArray[i].name} - ${scoreArray[i].points}</li>`
+    };
+
+    quizQuestionEl.innerHTML = '<div id="leaderboard-header-id">Leaderboard</div>';
+    //button to go home, sets attributes and id, onclick it reloads browser
+    goHomeButtonEl.textContent = 'Home';
+    goHomeButtonEl.setAttribute("id", "home-btn");
+    goHomeButtonEl.setAttribute("onclick", "location.reload()");
+    //button to clear scoreboard, set attributes and id, click clears local storage
+    clearScoresEl.textContent = 'Clear Scores';
+    clearScoresEl.setAttribute("id", "home-btn");
+    clearScoresEl.setAttribute("onclick", "localStorage.clear()");
+    //appends each element to the quiz div
+    quizDivEl.appendChild(finalScoreEl);
+    quizDivEl.appendChild(goHomeButtonEl);
+    quizDivEl.appendChild(clearScoresEl);
+}
 
 //starts quiz
 startBtn.addEventListener("click", startQuiz);
 //takes to leaderboard
-scoreboard.addEventListener("click", finalScore);
+scoreboard.addEventListener("click", scoreboardView);

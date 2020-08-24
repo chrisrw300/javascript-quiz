@@ -4,6 +4,11 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/*hide styles*/
+.hide {
+    display: none;
+}
+
 /*header styles*/
 .quiz-header-wrapper {
     position: relative;
@@ -35,9 +40,9 @@
 #quiz-wrapper {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    width: 75%;
+    width: 50%;
     background-color: white;
     padding: 50px;
     margin: 0 auto;
@@ -83,8 +88,9 @@ li {
     list-style: none;
 }
 
+/*answer button styles*/
 #answer-id {
-    margin: 0;
+    margin: 0 auto;
     width: 100%;
     background-color: green;
     border-radius: 25px;
@@ -92,6 +98,7 @@ li {
     border-bottom: none;
     border-left: thin solid darkgreen;
     border-right: thin solid darkgreen; 
+    font-size: 20px;
     color: white;
     padding: 25px 75px;
     box-shadow: 0 8px 0 darkgreen;
@@ -103,6 +110,7 @@ li {
     box-shadow: 0 4px 0 darkgreen;
 }
 
+/*submit button styles*/
 #submit-id {
     margin: 0;
     width: 100%;
@@ -113,6 +121,7 @@ li {
     border-left: thin solid darkgreen;
     border-right: thin solid darkgreen; 
     color: white;
+    font-size: 20px;
     padding: 25px 75px;
     box-shadow: 0 8px 0 darkgreen;
 }
@@ -123,6 +132,7 @@ li {
     box-shadow: 0 4px 0 darkgreen;
 }
 
+/*score id styles*/
 #score-id {
     font-size: 30px;
     margin-bottom: 50px;
@@ -131,7 +141,6 @@ li {
 
 #form-id {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     outline: none;
@@ -143,19 +152,30 @@ li {
     border-radius: 12px;
 }
 
-#final-hi-id {
+#final-score-id {
     width: 50%;
     margin: 20px auto;
-    border-bottom: thin solid green;
+    border-bottom: thick solid green;
 	color: black;
     border-radius: 5px;
     padding: 5px;
     box-shadow: 0 0 10px;
 }
 
-#home-bt-id {
-    margin: 10px 15px;
-    width: 50%;
+#leaderboard-header-id {
+    text-align: center;
+    font-size: 75px;
+    color: black;
+    margin: 0 auto;
+    display: block;
+    border-radius: 25px;
+    border-bottom: thick solid green;
+}
+
+/*button for going back to main page and clearing leaderboard*/
+#home-btn {
+    margin: 10px auto;
+    width: 100%;
     background-color: green;
     border-radius: 25px;
     border-top: none;
@@ -163,11 +183,11 @@ li {
     border-left: thin solid darkgreen;
     border-right: thin solid darkgreen; 
     color: white;
-    padding: 25px 75px;
+    padding: 25px 100px;
     box-shadow: 0 8px 0 darkgreen;
 }
 
-#home-bt-id:hover {
+#home-btn:hover {
     transition: 0.3s;
     transform: translateY(5%);
     box-shadow: 0 4px 0 darkgreen;
