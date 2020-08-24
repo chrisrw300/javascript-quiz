@@ -135,8 +135,6 @@ function showQuestion(answerInd) {
 }
 
 function highScore() {
-
-    quizQuestionEl.textContent = 'Quiz Complete!';
     quizScoreEl.textContent = "You scored " + points + " points!";
     quizScoreEl.setAttribute("id", "score-id");
     createFormEl.appendChild(initialInputEl);
