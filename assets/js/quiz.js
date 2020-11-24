@@ -50,14 +50,6 @@ var questions = [
         choiceC: "Quotes",
         choiceD: "Parentheses",
         correct: "C"
-    },
-    {
-        question: "A very useful tool during development and debugging for printing content to the debugger is:",
-        choiceA: "JavaScript",
-        choiceB: "Terminal/bash",
-        choiceC: "For Loops",
-        choiceD: "console.log",
-        correct: "D"
     }
 ]
 //set last question, current question, and initial score
