@@ -58,6 +58,7 @@ body {
     padding: 50px;
     margin: 200px 50px;
     border-radius: 10px;
+    box-shadow: 0 0 20px #4C5B61;
 }
 .quiz-instructions {
     font-size: 20px;
@@ -94,13 +95,14 @@ body {
     align-items: center;
     width: 50%;
     background: white;
+    box-shadow: 0 0 20px #4C5B61;
     padding: 50px;
     margin: 150px auto;
     border-radius: 10px;
 }
 #question {
     font-size: 2vw;
-    text-align: center;
+    text-align: left;
 }
 #answer-choices {
     padding: 10px;
@@ -111,8 +113,9 @@ body {
     color: white;
     width: 100%;
     padding: 10px 30px;
-    margin: 5px;
+    margin: 5px auto;
     font-size: 1vw;
+    text-align: left;
     border: none;
     border-radius: 10px;
 }
@@ -121,7 +124,9 @@ body {
     transition: 0.3s;
     background: #71868f;
 }
-
+#answer-right {
+    font-size: 100px;
+}
 /*inital screen*/
 #input-score {
     display: flex;
@@ -132,6 +137,7 @@ body {
     padding: 50px;
     margin: 150px auto;
     border-radius: 10px;
+    box-shadow: 0 0 20px #4C5B61;
 }
 .other-title {
     font-size: 2vw;
@@ -171,13 +177,21 @@ form {
     padding: 50px;
     margin: 150px auto;
     border-radius: 10px;
+    box-shadow: 0 0 20px #4C5B61;
 }
 #current-hs {
     list-style: none;
+    margin: 40px 5px;
 }
 #current-hs li {
-    margin: 5px;
+    background: #91C7B1;
+    border-radius: 10px;
+    width: 25%;
+    margin: 5px auto;
     padding: 5px;
+}
+.btn-wrapper {
+    margin: 40px 5px;
 }
 .clear-button {
     background: #4C5B61;

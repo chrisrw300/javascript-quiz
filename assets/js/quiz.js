@@ -14,6 +14,7 @@ const choiceD = document.querySelector('#choice-d');
 const startBtn = document.querySelector('#start-btn');
 const homeBtn = document.querySelector('#home-btn');
 const clearBtn = document.querySelector('#clear-hs');
+
 //timer
 const timerEl = document.querySelector('#seconds');
 let timeLeft = 60;
@@ -69,7 +70,7 @@ function countdownTimer() {
             timerEl.textContent = `${timeLeft} seconds`;
             clearInterval(timeInt);
             alert('You ran out of time!');
-            showScore();
+            finalScore();
         }
     }, 1000);
 }
@@ -78,19 +79,19 @@ function countdownTimer() {
 function loadQuestions() {
     let quest = questions[currentQuestion];
     question.innerHTML = `<p> ${quest.question} </p>`;
-    choiceA.innerHTML = quest.choiceA;
-    choiceB.innerHTML = quest.choiceB;
-    choiceC.innerHTML = quest.choiceC;
-    choiceD.innerHTML = quest.choiceD;
+    choiceA.innerHTML = `A) ${quest.choiceA}`;
+    choiceB.innerHTML = `B) ${quest.choiceB}`;
+    choiceC.innerHTML = `C) ${quest.choiceC}`;
+    choiceD.innerHTML = `D) ${quest.choiceD}`;
 }
 
 //verify selected answer is correct
 function verifyAns(answer) {
     if (answer === questions[currentQuestion].correct) {
         score++;
-        console.log('correct!');
+        alert('correct!');
     } else {
-        console.log(`the correct answer was ${questions[currentQuestion].correct}!`);
+        alert(`the correct answer was ${questions[currentQuestion].correct}!`);
         timeLeft = timeLeft - 10;
     }
     if (currentQuestion < endQuestion) {
