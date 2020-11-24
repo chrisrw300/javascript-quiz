@@ -5,26 +5,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JavaScript Fundamentals Quiz</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Piazzolla&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
 <body>
     <header>
-        <div class="quiz-header-wrapper">
+        <nav class="quiz-header-wrapper">
             <!-- will navigate to highscore page -->
             <a href="#" id="highscore">High Scores</a>
+            <!--title-->
+            <a href="index.html" class="quiz-header">JavaScript Fundamentals Quiz</a>
             <!--span is for the counter to be put into-->
             <p class="timer"><span id="seconds"></span></p>
-        </div>
+        </nav>
     </header>
     <main>
-            <!--main quiz wrapper-->
-            <div id="quiz-wrapper">
-                <p id="question">JavaScript Fundamentals Quiz</p>
-                <div id="quiz">
-                    <button type="submit" id="start-btn">Begin Quiz</button>
-                </div>
-            </div>
+
+        <!--home page-->
+        <div id="homepage" class="homepage">
+            <p class="quiz-instructions">
+                <span>Welcome to the JavaScript Fundamentals Quiz!</span><br>
+                To successfully complete this quiz, you will have to answer as many questions as you can. <br>
+                Each question you get wrong will decrease the remaining time by 10 seconds. Be aware that the time left is your points for the leaderboard.
+            </p>
+            <button type="submit" class="button" id="start-btn">Start</button>
+        </div>
+
+        <!--quiz-->
+        <div id="quiz-wrapper" style="display: none;">
+            <h3 id="question"></h3>
+            <ul id="answer-choices">
+                <button id="choice-a" onclick="verifyAns('A')" class="answer-button"></button>
+                <button id="choice-b" onclick="verifyAns('B')" class="answer-button""></button>
+                <button id="choice-c" onclick="verifyAns('C')" class="answer-button""></button>
+                <button id="choice-d" onclick="verifyAns('D')" class="answer-button""></button>
+            </ul>
+        </div>
+        
+        <!--input initials page-->
+        <div id="input-score" style="display: none;">
+            <!--work in possible scale of good job, you did okay, and then better luck next time based on score?-->
+            <h3 class="other-title">Great Job!</h3>
+            <div id="final-score"></div>
+            <form class="input-score-form">
+                <label for="inputscore">Please enter your initials:</label>
+                <input id="input-initials" type="text" name="inputscore">
+            </form>
+            <button id="submit" class="score-button" type="submit">Submit</button>
+        </div>
+
+        <!--scoreboard page-->
+        <div id="scoreboard-page" style="display: none;">
+            <h3 class="other-title">Current High Scores</h3>
+            <ul id="current-hs">
+                <!--display high scores-->
+            </ul>
+            <button id="home-btn" class="clear-button">Home</button>
+            <button id="clear-hs" class="clear-button">Clear High Scores</button>
+        </div>
     </main>
     <script src="./assets/js/quiz.js"></script>
 </body>

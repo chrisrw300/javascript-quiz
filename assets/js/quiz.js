@@ -1,227 +1,179 @@
-//variable declaration
-var scoreboard = document.querySelector('#highscore');
-var timerEl = document.querySelector('#seconds');         //timer
-var startBtn = document.querySelector('#start-btn');      //start button
-var quizQuestionEl = document.querySelector('#question');
-var quizWrapper = document.querySelector('#quiz-wrapper');
-var quizDivEl = document.querySelector('#quiz');
-var createFormEl = document.createElement('form');
-var initialInputEl = document.createElement('input');
-var finalScoreButtonEl = document.createElement('button');
-var quizScoreEl = document.createElement('p');
-var finalScoreEl = document.createElement('ul');
-var goHomeButtonEl = document.createElement('button');
-var clearScoresEl = document.createElement('button');
-var currentQuestion = 0;
-var timeLeft = 60;
-var points = timeLeft;
-
-//array declaration
-var quizQuestionsArray = [
+//variable declarations
+const highscoresEl = document.querySelector('#scoreboard-page');
+const highscoresBtn = document.querySelector('#highscore');
+const homepageEl = document.querySelector('#homepage');
+const quizEl = document.querySelector('#quiz-wrapper');
+const inputScoreEl = document.querySelector('#input-score');
+//quiz declarations
+const quizQuestEl = document.querySelector('#question');
+const choiceA = document.querySelector('#choice-a');
+const choiceB = document.querySelector('#choice-b');
+const choiceC = document.querySelector('#choice-c');
+const choiceD = document.querySelector('#choice-d');
+//button declarations
+const startBtn = document.querySelector('#start-btn');
+const homeBtn = document.querySelector('#home-btn');
+const clearBtn = document.querySelector('#clear-hs');
+//timer
+const timerEl = document.querySelector('#seconds');
+let timeLeft = 60;
+//quiz question array
+var questions = [
     {
-        question: 'Commonly used data types do NOT include:', 
-        choices: ['strings', 'booleans', 'alerts', 'numbers'],
-        answer: 'alerts'
+        question: "Commonly used data types DO NOT include:",
+        choiceA: "Strings",
+        choiceB: "Booleans",
+        choiceC: "Alerts",
+        choiceD: "Numbers",
+        correct: "C"
     },
     {
-        question: 'The condition in an if / else statement is enclosed with ______.', 
-        choices: ['quotes', 'curly brackets', 'parenthesis', 'square brackets'],
-        answer: 'parenthesis'
+        question: "The condition in an if/else statement is enclosed with _____.",
+        choiceA: "Quotes",
+        choiceB: "Curly Brackets",
+        choiceC: "Parentheses",
+        choiceD: "Square brackets",
+        correct: "C"
     },
     {
-        question: 'Arrays in JavaScript can be used to store', 
-        choices: ['numbers and strings', 'other arrays', 'booleans', 'all of the above'],
-        answer: 'all of the above'
+        question: "Arrays in JavaScript can be used to store ______",
+        choiceA: "Numbers and Strings",
+        choiceB: "Other Arrays",
+        choiceC: "Booleans",
+        choiceD: "All of the above",
+        correct: "D"
     },
     {
-        question: 'String values must be enclosed within ____ when being assigned to variables', 
-        choices: ['commas', 'curly brakcets', 'quotes', 'parenthesis'],
-        answer: 'quotes'
+        question: "String values must be enclosed with _____ when being assigned to variables.",
+        choiceA: "Commas",
+        choiceB: "Curly Brackets",
+        choiceC: "Quotes",
+        choiceD: "Parentheses",
+        correct: "C"
     },
     {
-        question: null,
-        choices: ''
-    },
-
+        question: "A very useful tool during development and debugging for printing content to the debugger is:",
+        choiceA: "JavaScript",
+        choiceB: "Terminal/bash",
+        choiceC: "For Loops",
+        choiceD: "console.log",
+        correct: "D"
+    }
 ]
+//set last question, current question, and initial score
+var endQuestion = questions.length -1;
+var currentQuestion = 0;
+let score = 0;
 
-function startQuiz() {
-    var quests = quizQuestionsArray[currentQuestion].question;
-    var currentAns = quizQuestionsArray[currentQuestion].choices;
-    var ulEl = document.createElement("ul");
-
-    countdownTimer();
-
-    quizDivEl.innerHTML = '';
-    
-    for (var i = 0; i < currentAns.length; i++) {
-        if (i < currentAns.length) {
-            // generate list and button
-            var liEl = document.createElement("li");
-            var buttonEl = document.createElement("button");
-            // set buttons text to current choices
-            buttonEl.textContent = currentAns[i];
-            //set value of button to the index of the answer
-            buttonEl.setAttribute("value", i);
-            buttonEl.setAttribute("id", "answer-id");
-            // connect button to list and list to unordered list
-            liEl.appendChild(buttonEl);
-            ulEl.appendChild(liEl);
-            buttonEl.onclick = buttonClick;
-        }
-
-    };
-
-    if (quests === null) {
-        highScore();
-    }
-
-    quizDivEl.appendChild(ulEl);
-
-    quizQuestionEl.textContent = quests;
-
-};
-
-function buttonClick() {
-    if (this.value === quizQuestionsArray[currentQuestion].answer.toString()) {
-        currentQuestion++;
-        startQuiz();
-    } else {
-        timeLeft = timeLeft - 10;
-        currentQuestion++;
-        startQuiz();
-    }
-};
-
-
+//countdown
 function countdownTimer() {
-    var timeInterval = setInterval(function () {
-
-        if (timeLeft > 1) {
-            timerEl.textContent = timeLeft + ' seconds left';
+    var timeInt = setInterval(function() {
+        if (timeLeft > 0) {
+            timerEl.textContent = `${timeLeft} seconds`;
             timeLeft--;
-
-        } 
-        else if (quizQuestionsArray[currentQuestion].question === null) {
-            
-            
-            quizDivEl.innerHTML = '';
-            return highScore();
-        }
-        else if (timeLeft === 1) {
-            timerEl.textContent = timeLeft + ' second left';
-            timeLeft--;
-        } 
-        else if (timeLeft === 0) {
-            clearInterval(timeInterval);
-        }
-         else {
-            timerEl.textContent = '';
-            clearInterval(timeInterval);
+        } else if (timeLeft === 1) {
+            timerEl.textContent = `${timeLeft} second`;
+        } else if (timeLeft === 0) {
+            timerEl.textContent = `${timeLeft} seconds`;
+            clearInterval(timeInt);
+            alert('You ran out of time!');
+            showScore();
         }
     }, 1000);
 }
 
+//load questions
+function loadQuestions() {
+    let quest = questions[currentQuestion];
+    question.innerHTML = `<p> ${quest.question} </p>`;
+    choiceA.innerHTML = quest.choiceA;
+    choiceB.innerHTML = quest.choiceB;
+    choiceC.innerHTML = quest.choiceC;
+    choiceD.innerHTML = quest.choiceD;
+}
 
-function showQuestion(answerInd) {
-    if (quizQuestionsArray[currentQuestion].answer == answerInd) {
-        currentQuestion++;
-        startQuiz();
+//verify selected answer is correct
+function verifyAns(answer) {
+    if (answer === questions[currentQuestion].correct) {
+        score++;
+        console.log('correct!');
     } else {
-        currentQuestion++;
-        startQuiz();
+        console.log(`the correct answer was ${questions[currentQuestion].correct}!`);
+        timeLeft = timeLeft - 10;
     }
-
+    if (currentQuestion < endQuestion) {
+        currentQuestion++;
+        loadQuestions();
+    } else {
+        finalScore();
+        timeLeft = 99999999;
+        timerEl.style.display = 'none';
+    }
 }
 
-function highScore() {
-    quizScoreEl.textContent = "You scored " + points + " points!";
-    quizScoreEl.setAttribute("id", "score-id");
-    createFormEl.appendChild(initialInputEl);
-
-    finalScoreButtonEl.onclick = function () { finalScore(initialInputEl) };
-    finalScoreButtonEl.textContent = "Submit Your Score";
-    finalScoreButtonEl.setAttribute("id", "submit-id");
-
-    //sets attribute to initial input of high score set
-    initialInputEl.setAttribute("type", "text");
-    initialInputEl.setAttribute("placeholder", "Enter Initials");
-    initialInputEl.setAttribute("id", "form-id");
-   
-    //adds to quiz div
-    quizDivEl.appendChild(quizQuestionEl)
-    quizDivEl.appendChild(quizScoreEl)
-    quizDivEl.appendChild(createFormEl)
-    quizDivEl.appendChild(finalScoreButtonEl)
-    
+//start quiz
+function startQuiz() {
+    //begin timer
+    countdownTimer();
+    //hide homepage
+    homepageEl.style.display = 'none';
+    //get questions
+    loadQuestions();
+    //show quiz div
+    quizEl.style.display = 'block';
 }
 
-function finalScore(initialInputEl) {
-    quizDivEl.innerHTML = ' ';
-    console.log(quizDivEl);
-    var newScore = {
-        points: timeLeft,
-        name: initialInputEl.value
-    };
-
-    var scoreArray = JSON.parse(localStorage.getItem("highScores"))
-    if (scoreArray == null) {
-        scoreArray = [];
-    };
-
-    scoreArray.push(newScore);
-    localStorage.setItem("highScores", JSON.stringify(scoreArray));
-    finalScoreEl.innerHTML = '';
-
-    for (var i = 0; i < scoreArray.length; i++) {
-        finalScoreEl.innerHTML += `<li id="final-score-id">${scoreArray[i].name} - ${scoreArray[i].points}</li>`;
-    };
-
-    quizQuestionEl.innerHTML = '<div id="leaderboard-header-id">Leaderboard</div>';
-    //button to go home, sets attributes and id, onclick it reloads browser
-    goHomeButtonEl.textContent = 'Home';
-    goHomeButtonEl.setAttribute("id", "home-btn");
-    goHomeButtonEl.setAttribute("onclick", "location.reload()");
-    //button to clear scoreboard, set attributes and id, click clears local storage
-    clearScoresEl.textContent = 'Clear Scores';
-    clearScoresEl.setAttribute("id", "home-btn");
-    clearScoresEl.setAttribute("onclick", "localStorage.clear()");
-    //appends each element to the quiz div
-    quizDivEl.appendChild(finalScoreEl);
-    quizDivEl.appendChild(goHomeButtonEl);
-    quizDivEl.appendChild(clearScoresEl);
-};
-
-function scoreboardView() {
-    //hides start btn when accessing leaderboard from home
-    startBtn.setAttribute('class', 'hide');
-
-    //gets highscore
-    var scoreArray = JSON.parse(localStorage.getItem("highScores"))
-    if (scoreArray == null) {
-        scoreArray = [];
-    };
-
-    for (var i = 0; i < scoreArray.length; i++) {
-        finalScoreEl.innerHTML += `<li id="final-score-id">${scoreArray[i].name} - ${scoreArray[i].points}</li>`
-    };
-
-    quizQuestionEl.innerHTML = '<div id="leaderboard-header-id">Leaderboard</div>';
-    //button to go home, sets attributes and id, onclick it reloads browser
-    goHomeButtonEl.textContent = 'Home';
-    goHomeButtonEl.setAttribute("id", "home-btn");
-    goHomeButtonEl.setAttribute("onclick", "location.reload()");
-    //button to clear scoreboard, set attributes and id, click clears local storage
-    clearScoresEl.textContent = 'Clear Scores';
-    clearScoresEl.setAttribute("id", "home-btn");
-    clearScoresEl.setAttribute("onclick", "localStorage.clear()");
-    //appends each element to the quiz div
-    quizDivEl.appendChild(finalScoreEl);
-    quizDivEl.appendChild(goHomeButtonEl);
-    quizDivEl.appendChild(clearScoresEl);
+//show final score
+function finalScore() {
+    quizEl.style.display = 'none';
+    inputScoreEl.style.display = 'block';
+    let endScore = timeLeft;
+    document.querySelector("#final-score").innerHTML = `Your Final Score is ${endScore}`;
+    localStorage.setItem("userScore", JSON.stringify(endScore));
 }
 
-//starts quiz
-startBtn.addEventListener("click", startQuiz);
-//takes to leaderboard
-scoreboard.addEventListener("click", scoreboardView);
+//local storage 
+const inputInitials = document.querySelector('#input-initials');
+const scoreList = document.querySelector('#current-hs');
+const submit = document.querySelector('#submit');
+
+//display scoreboard page
+function highscorePage() {
+    homepageEl.style.display = 'none';
+    quizEl.style.display = 'none';
+    inputScoreEl.style.display = 'none';
+    highscoresEl.style.display = 'block';
+
+    //get local storage items
+    for (let i = 0; i < localStorage.length; i++) {
+        var userName = localStorage.getItem('userInitials');
+        var userPoints = localStorage.getItem('userScore');
+        userPoints = JSON.parse(userPoints);
+
+        var createLi = document.createElement('li');
+        var userLi = document.createTextNode(`${userName} - ${userPoints}`);
+        createLi.appendChild(userLi);
+        document.querySelector('#current-hs').appendChild(createLi);
+    }
+}
+
+//event listener to start quiz
+startBtn.addEventListener('click', startQuiz);
+//view highscores from home
+highscoresBtn.addEventListener('click', highscorePage);
+//sets initials and score in local storage
+submit.addEventListener('click', function (event) {
+    //stores high score in local storage
+    localStorage.setItem('userInitials', inputInitials.value);
+    highscorePage();
+})
+//clear scores
+clearBtn.addEventListener('click', function() {
+    localStorage.clear();
+    alert('Scores have been cleared!');
+})
+//go home
+homeBtn.addEventListener('click', function() {
+    location.reload();
+    return false;
+})
